@@ -6,7 +6,8 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
-    public UnityEvent jumped;
+    public UnityEvent groundJumped;
+    public UnityEvent wallJumped;
     private Rigidbody _rb;
 
     [SerializeField] private float moveForce = 5;
@@ -55,14 +56,15 @@ public class PlayerController : MonoBehaviour
             Vector3 vel = _rb.velocity;
             if (grounded)
             {
-                jumped.Invoke();
+                groundJumped.Invoke();
                 vel.y = jumpForce;
             }
             else if (walled || wallGrace > Time.time)
             {
-                jumped.Invoke();
+                wallJumped.Invoke();
                 vel.y = wallJumpForce.y;
                 vel.x = wallJumpForce.x * wallDir;
+                wallGrace = 0;
             }
 
             _rb.velocity = vel;
@@ -114,7 +116,10 @@ public class PlayerController : MonoBehaviour
     public void WallJumped()
     {
         walled = false;
-        wallGrace = Time.time + 0.5f;
+        if (lastJumpTime + jumpCooldown < Time.time)
+            wallGrace = Time.time + 0.2f;
     }
     #endregion
+
+    public void OnSwimming() => Swimming = !Swimming;
 }

@@ -7,6 +7,7 @@ public class CameraCont : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private Rigidbody targetRigidbody;
     private Vector3 velocityOffset = new Vector3(0, 0, 0);
+    [SerializeField] private Vector3 offset = new Vector3(0, 0, 0);
     public CameraZone zone;
     [SerializeField] private float dampening = 5;
     [SerializeField] private float velDampening = 5;
@@ -20,7 +21,7 @@ public class CameraCont : MonoBehaviour
         velocityOffset = Vector3.Lerp(velocityOffset, targetRigidbody.velocity * velocityInfluenceMult, velDampening * Time.deltaTime);
 
         // Get Target Position
-        Vector2 targetPos = target.position + velocityOffset;
+        Vector2 targetPos = target.position + velocityOffset + offset;
 
         // Clamp To Current Camera Zone
         targetPos.x = Mathf.Clamp(targetPos.x, zone.minX() + scale.x, zone.maxX() - scale.x);

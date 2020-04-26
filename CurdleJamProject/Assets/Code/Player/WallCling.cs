@@ -17,7 +17,7 @@ public class WallCling : MonoBehaviour
 
     private Rigidbody _rb;
 
-    void Start()
+    void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
@@ -84,7 +84,9 @@ public class WallCling : MonoBehaviour
     public void Jumped()
     {
         _rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        strength = Mathf.Min(strength + 1, maxStrength);
+        strength = Mathf.Min(strength + 0.5f, maxStrength);
         delayEndTime = Time.time + delayLength;
     }
+
+    public void OnSwimming() => Swimming = !Swimming;
 }

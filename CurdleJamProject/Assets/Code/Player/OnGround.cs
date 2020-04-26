@@ -13,7 +13,11 @@ public class OnGround : MonoBehaviour
     [SerializeField] private float airDrag = 1;
     [SerializeField] private float groundDrag = 0;
 
+    [SerializeField] private LayerMask layerMask = new LayerMask();
+
     private List<Collider> others = new List<Collider>();
+
+    private bool swimming = false;
 
     private void Start()
     {
@@ -35,12 +39,16 @@ public class OnGround : MonoBehaviour
 
     private void OnJumped()
     {
-        Jumped.Invoke();
+        if (swimming == false)
+            Jumped.Invoke();
         _rb.drag = airDrag;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (layerMask != (layerMask | (1 << other.gameObject.layer)))
+            return;
+
         others.Add(other);
 
         if (others.Count == 1)
@@ -49,9 +57,14 @@ public class OnGround : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (layerMask != (layerMask | (1 << other.gameObject.layer)))
+            return;
+
         others.Remove(other);
 
         if (others.Count <= 0)
             OnJumped();
     }
+
+    public void OnSwimming() => swimming = !swimming;
 }

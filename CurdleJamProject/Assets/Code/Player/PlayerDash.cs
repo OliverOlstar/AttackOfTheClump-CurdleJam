@@ -8,6 +8,8 @@ public class PlayerDash : MonoBehaviour
 {
     private Rigidbody _rb;
 
+    public UnityEvent SwimmingToggle;
+
     [SerializeField] private float dashDistance = 2;
     [SerializeField] private float dashLength = 1;
 
@@ -19,7 +21,10 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private float swimSpeed = 5;
     [SerializeField] private float swimRotDampening = 5;
     [SerializeField] private LayerMask sandLayer = new LayerMask();
-    private bool Swimming = false;
+    private bool swimming = false;
+
+    [SerializeField] private LayerMask swimmingCollisionLayer = new LayerMask();
+    [SerializeField] private float swimmingCollisionCheckDistance = 1;
 
     void Start()
     {
@@ -33,7 +38,7 @@ public class PlayerDash : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext pAction)
     {
-        if (Swimming) return;
+        if (swimming) return;
 
         if (pAction.performed && dashes > 0)
         {
@@ -63,6 +68,8 @@ public class PlayerDash : MonoBehaviour
 
     private IEnumerator swimmingRoutine(Vector2 pMoveInput)
     {
+        SwimmingToggle.Invoke();
+        swimming = true;
         _rb.isKinematic = true;
         float minSwimTime = Time.time + 0.5f;
 
@@ -71,16 +78,38 @@ public class PlayerDash : MonoBehaviour
             if (_moveInput != Vector2.zero && _moveInput != pMoveInput)
                 pMoveInput = Vector2.Lerp(pMoveInput, _moveInput, Vector2.Distance(pMoveInput, _moveInput) * Time.deltaTime * swimRotDampening).normalized;
 
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, pMoveInput, out hit, swimmingCollisionCheckDistance, swimmingCollisionLayer))
+            {
+                pMoveInput = Vector2.Reflect(pMoveInput, hit.normal).normalized;
+            }
+
             transform.Translate(pMoveInput.normalized * swimSpeed * Time.deltaTime);
+
             yield return null;
         }
 
+        SwimmingToggle.Invoke();
+        swimming = false;
         _rb.isKinematic = false;
         _rb.velocity = pMoveInput * swimSpeed;
+        dashes = 1;
     }
 
     public void Landed()
     {
         dashes = 1;
+    }
+
+    public void Respawn()
+    {
+        StopAllCoroutines();
+
+        if (swimming)
+        {
+            swimming = false;
+            SwimmingToggle.Invoke();
+            _rb.isKinematic = false;
+        }
     }
 }
