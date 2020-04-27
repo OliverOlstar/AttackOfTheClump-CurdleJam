@@ -11,6 +11,7 @@ public class SplineWalker : MonoBehaviour {
 	[Space]
 	public float progress;
 	public bool neverStop = false;
+	public bool lookAt = true;
 
 	private float pauseTime = 1;
 	private int state = 1;
@@ -19,6 +20,7 @@ public class SplineWalker : MonoBehaviour {
 	[SerializeField] private float moveLength = 1;
 
 	public UnityEvent ReachedEnd;
+	public UnityEvent Respawned;
 
 	private void Update()
 	{
@@ -33,7 +35,8 @@ public class SplineWalker : MonoBehaviour {
 			Vector3 position = spline.GetPoint(progress);
 			transform.localPosition = position;
 
-			transform.LookAt(position + spline.GetDirection(progress));
+			if (lookAt)
+				transform.LookAt(position + spline.GetDirection(progress));
 
 			// Reached the end of the path
 			if (progress == 1.0f)
@@ -60,6 +63,8 @@ public class SplineWalker : MonoBehaviour {
 
 	public void Respawn(float pProgress)
 	{
+		Respawned.Invoke();
+
 		// Set Progress
 		progress = pProgress;
 
@@ -71,5 +76,7 @@ public class SplineWalker : MonoBehaviour {
 		// Switch To Stopped
 		pauseTime = Time.time + stopLength;
 		state = 1;
+
+		enabled = true;
 	}
 }

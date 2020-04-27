@@ -10,7 +10,7 @@ public class bossTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (triggerDelayEndTime < Time.time)
+        if (other.CompareTag("Player") && triggerDelayEndTime < Time.time)
         {
             Debug.Log("Boss Trigger");
             boss.spline = bossPath;

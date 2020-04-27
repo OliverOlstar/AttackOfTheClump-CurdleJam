@@ -6,15 +6,23 @@ public class checkPoint : MonoBehaviour
 {
     [SerializeField] private float bossProgress = 0;
     [SerializeField] private SplineWalker boss;
+    private Animator sprite;
+
+    private void Start()
+    {
+        sprite = GetComponentInChildren<Animator>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        lifeManager._instance.curCheckPoint = this;
+        if (other.CompareTag("Player"))
+            SetSpawn();
     }
 
     public void SetSpawn()
     {
         lifeManager._instance.curCheckPoint = this;
+        sprite.SetTrigger("Lit");
     }
 
     public void Respawn(GameObject pPlayer)

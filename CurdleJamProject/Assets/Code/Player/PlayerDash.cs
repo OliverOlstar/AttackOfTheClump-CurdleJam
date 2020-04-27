@@ -40,7 +40,7 @@ public class PlayerDash : MonoBehaviour
     {
         if (swimming) return;
 
-        if (pAction.performed && dashes > 0)
+        if (pAction.performed && dashes > 0 && _moveInput != Vector2.zero)
         {
             StartCoroutine(dashRoutine());
             dashes--;

@@ -67,4 +67,13 @@ public class OnGround : MonoBehaviour
     }
 
     public void OnSwimming() => swimming = !swimming;
+
+    public void Respawn()
+    {
+        if (others.Count > 0)
+        {
+            OnJumped();
+            others.Clear();
+        }
+    }
 }

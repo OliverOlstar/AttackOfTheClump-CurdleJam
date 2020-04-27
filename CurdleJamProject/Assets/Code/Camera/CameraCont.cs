@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraCont : MonoBehaviour
 {
-    [SerializeField] private Transform target;
+    public Transform target;
     [SerializeField] private Rigidbody targetRigidbody;
     private Vector3 velocityOffset = new Vector3(0, 0, 0);
     [SerializeField] private Vector3 offset = new Vector3(0, 0, 0);
@@ -24,8 +24,11 @@ public class CameraCont : MonoBehaviour
         Vector2 targetPos = target.position + velocityOffset + offset;
 
         // Clamp To Current Camera Zone
-        targetPos.x = Mathf.Clamp(targetPos.x, zone.minX() + scale.x, zone.maxX() - scale.x);
-        targetPos.y = Mathf.Clamp(targetPos.y, zone.minY() + scale.y, zone.maxY() - scale.y);
+        if (zone != null)
+        {
+            targetPos.x = Mathf.Clamp(targetPos.x, zone.minX() + scale.x, zone.maxX() - scale.x);
+            targetPos.y = Mathf.Clamp(targetPos.y, zone.minY() + scale.y, zone.maxY() - scale.y);
+        }
 
         // Get Next Position
         Vector3 nextPos = Vector2.Lerp(transform.position, targetPos, dampening * Time.deltaTime);

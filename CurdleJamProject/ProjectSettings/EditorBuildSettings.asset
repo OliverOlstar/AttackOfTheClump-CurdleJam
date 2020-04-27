@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/3 - Chase.unity
     guid: e1650b75b5665884aa6674c6a9c51840
+  - enabled: 1
+    path: Assets/Scenes/4 - Spike Fall.unity
+    guid: edf17dafd0ff57d4da85f0173762ed5e
+  - enabled: 1
+    path: Assets/Scenes/5 - Homerun.unity
+    guid: 7b093e536b2c82f4cae260a638fad871
   m_configObjects: {}

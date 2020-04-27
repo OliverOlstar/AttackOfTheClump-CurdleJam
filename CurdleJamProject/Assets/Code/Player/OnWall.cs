@@ -100,4 +100,13 @@ public class OnWall : MonoBehaviour
         if (swimming && walled)
             OnJumped();
     }
+
+    public void Respawn()
+    {
+        if (others.Count > 0)
+        {
+            OnJumped();
+            others.Clear();
+        }
+    }
 }
