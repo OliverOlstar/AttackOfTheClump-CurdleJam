@@ -21,6 +21,7 @@ public class lifeManager : MonoBehaviour
     #endregion
 
     public UnityEvent playerDied;
+    public UnityEvent playerLives;
 
     [Space]
     public checkPoint curCheckPoint;
@@ -64,6 +65,8 @@ public class lifeManager : MonoBehaviour
         playerSprite.enabled = false;
         player.SetActive(false);
 
+        curCheckPoint.StopBoss();
+
         float time = 0;
 
         while (time < 1)
@@ -85,5 +88,6 @@ public class lifeManager : MonoBehaviour
 
         particle.Play();
         ripple.Emit(Camera.main.WorldToViewportPoint(endPos));
+        playerLives.Invoke();
     }
 }

@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class checkPoint : MonoBehaviour
 {
     [SerializeField] private float bossProgress = 0;
     [SerializeField] private SplineWalker boss;
     private Animator sprite;
+
+    public UnityEvent respawned;
 
     private void Start()
     {
@@ -22,7 +25,14 @@ public class checkPoint : MonoBehaviour
     public void SetSpawn()
     {
         lifeManager._instance.curCheckPoint = this;
-        sprite.SetTrigger("Lit");
+        if (sprite != null)
+            sprite.SetTrigger("Lit");
+    }
+
+    public void StopBoss()
+    {
+        if (boss != null)
+            boss.enabled = false;
     }
 
     public void Respawn(GameObject pPlayer)
@@ -32,6 +42,8 @@ public class checkPoint : MonoBehaviour
         pPlayer.GetComponent<PlayerDash>().Respawn();
 
         if (boss != null)
-            boss.Respawn(bossProgress); 
+            boss.Respawn(bossProgress);
+
+        respawned.Invoke();
     }
 }

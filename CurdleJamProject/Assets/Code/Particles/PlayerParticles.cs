@@ -10,6 +10,9 @@ public class PlayerParticles : MonoBehaviour
     [SerializeField] private particleOffVelocity wallSlideParticle;
     [SerializeField] private particlePlayer wallJumpingParticle;
 
+    [SerializeField] private TrailRenderer swimmingTrail;
+    [SerializeField] private ParticleSystem swimmingParticle;
+
     private bool swimming = false;
 
     public void Jumped()
@@ -74,6 +77,16 @@ public class PlayerParticles : MonoBehaviour
         {
             wallSlideParticle.TriggerParticle(false);
             runningParticle.TriggerParticle(false);
+            swimmingParticle.Play();
         }
+        else
+        {
+            swimmingParticle.Stop();
+        }
+    }
+
+    public void OnSwimming2()
+    {
+        swimmingTrail.emitting = !swimmingTrail.emitting;
     }
 }

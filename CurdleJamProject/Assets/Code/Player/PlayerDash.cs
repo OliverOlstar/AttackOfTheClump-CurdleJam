@@ -10,6 +10,7 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private Transform sprite;
 
     public UnityEvent SwimmingToggle;
+    public UnityEvent SwimmingToggle2;
     public UnityEvent Dashed;
 
     [SerializeField] private float dashDistance = 2;
@@ -74,6 +75,7 @@ public class PlayerDash : MonoBehaviour
     private IEnumerator swimmingRoutine(Vector2 pMoveInput)
     {
         SwimmingToggle.Invoke();
+        SwimmingToggle2.Invoke();
         swimming = true;
         _rb.isKinematic = true;
         float minSwimTime = Time.time + 0.2f;
@@ -101,6 +103,8 @@ public class PlayerDash : MonoBehaviour
         _rb.isKinematic = false;
         _rb.velocity = pMoveInput * swimSpeed;
 
+        SwimmingToggle2.Invoke();
+
         yield return new WaitForSeconds(0.1f);
 
         SwimmingToggle.Invoke();
@@ -121,6 +125,7 @@ public class PlayerDash : MonoBehaviour
         {
             swimming = false;
             SwimmingToggle.Invoke();
+            SwimmingToggle2.Invoke();
             _rb.isKinematic = false;
         }
     }

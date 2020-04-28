@@ -15,6 +15,12 @@ public class MusicPlayer : MonoBehaviour
     [SerializeField] private AudioClip NothingWrong;
     [SerializeField] private AudioClip EverythingWrong;
     [SerializeField] private AudioClip SpookyNoise;
+    [SerializeField] private AudioClip Acending;
+
+    private bool swimming = false;
+
+    private float defaultPitch = 1;
+    private float defaultVolume = 1;
 
     private void Awake()
     {
@@ -24,6 +30,9 @@ public class MusicPlayer : MonoBehaviour
             instance = this;
 
         source = GetComponents<AudioSource>();
+
+        defaultVolume = source[0].volume;
+        defaultPitch = source[0].pitch;
     }
 
     public void PlaySpookySong(Transform pBoss)
@@ -55,12 +64,42 @@ public class MusicPlayer : MonoBehaviour
         }
     }
 
+    public void PlayFinal()
+    {
+        if (playingSpooky == false)
+        {
+            playingSpooky = true;
+
+            source[0].clip = Acending;
+            source[0].Play();
+
+            source[1].Stop();
+
+            boss = null;
+        }
+    }
+
     private void Update()
     {
-        if (playingSpooky)
+        if (playingSpooky && boss != null)
         {
             source[1].volume = Mathf.Clamp(1 - Vector3.Distance(boss.position, player.position) / 20, 0.0f, 0.8f);
-            Debug.Log(Vector3.Distance(boss.position, player.position));
+        }
+    }
+
+    public void Swimming()
+    {
+        swimming = !swimming;
+
+        if (swimming && playingSpooky == false)
+        {
+            source[0].volume = defaultVolume - 0.3f;
+            source[0].pitch = defaultPitch - 0.3f;
+        }
+        else
+        {
+            source[0].volume = defaultVolume;
+            source[0].pitch = defaultPitch;
         }
     }
 }
