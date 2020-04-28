@@ -22,7 +22,7 @@ public class SplatParticles : MonoBehaviour
         foreach (ParticleCollisionEvent collision in collisionEvents)
         {
             GameObject splat = Instantiate(splatPrefab, collision.intersection, Quaternion.identity) as GameObject;
-            if (collision.colliderComponent.CompareTag("Bloodable"))
+            if (collision.colliderComponent != null && collision.colliderComponent.CompareTag("Bloodable"))
             {
                 splat.GetComponent<Splat>().Init(-1);
                 splat.transform.SetParent(collision.colliderComponent.transform, true);

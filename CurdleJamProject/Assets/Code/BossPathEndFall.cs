@@ -27,5 +27,7 @@ public class BossPathEndFall : MonoBehaviour
             transform.Translate(Vector3.down * vel, Space.World);
             transform.Rotate(rot * Time.deltaTime);
         }
+
+        MusicPlayer.instance.PlayNormal();
     }
 }

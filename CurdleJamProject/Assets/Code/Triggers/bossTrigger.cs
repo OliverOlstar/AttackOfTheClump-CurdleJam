@@ -19,6 +19,7 @@ public class bossTrigger : MonoBehaviour
             boss.target = other.transform;
             triggerDelayEndTime = Time.time + 1.0f;
             EZCameraShake.CameraShaker.Instance.ShakeOnce(10, 5, 3, 5);
+            MusicPlayer.instance.PlaySpookySong(boss.transform);
         }
     }
 

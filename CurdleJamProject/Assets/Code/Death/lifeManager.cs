@@ -29,6 +29,7 @@ public class lifeManager : MonoBehaviour
     [SerializeField] private Transform cameraTrigger;
     [SerializeField] private CameraCont camera;
     [SerializeField] private ParticleSystem particle;
+    [SerializeField] private RippleEffect ripple;
 
     [Header("Anim")]
     [SerializeField] private ParticleSystem bloodSplater;
@@ -56,6 +57,8 @@ public class lifeManager : MonoBehaviour
         orb.position = startPos;
         orb.parent.rotation = Quaternion.LookRotation(endPos - startPos);
 
+        camera.useZones = false;
+
         player.transform.position = endPos;
 
         playerSprite.enabled = false;
@@ -74,10 +77,13 @@ public class lifeManager : MonoBehaviour
 
         curCheckPoint.Respawn(player);
 
+        camera.useZones = true;
+
         player.SetActive(true);
         playerSprite.enabled = true;
         orb.gameObject.SetActive(false);
 
         particle.Play();
+        ripple.Emit(Camera.main.WorldToViewportPoint(endPos));
     }
 }

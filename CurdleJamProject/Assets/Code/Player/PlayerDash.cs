@@ -7,8 +7,10 @@ using UnityEngine.InputSystem;
 public class PlayerDash : MonoBehaviour
 {
     private Rigidbody _rb;
+    [SerializeField] private Transform sprite;
 
     public UnityEvent SwimmingToggle;
+    public UnityEvent Dashed;
 
     [SerializeField] private float dashDistance = 2;
     [SerializeField] private float dashLength = 1;
@@ -49,13 +51,16 @@ public class PlayerDash : MonoBehaviour
 
     private IEnumerator dashRoutine()
     {
+        Dashed.Invoke();
+
         Vector3 moveInput = _moveInput;
         float endTime = Time.time + dashLength;
         while (Time.time < endTime)
         {
             // Check for colliding with sand
-            if (Physics.OverlapSphere(transform.position + new Vector3(_moveInput.x, _moveInput.y, 0) / 2, 0.5f, sandLayer).Length > 0)
+            if (Physics.OverlapSphere(transform.position + (Vector3.up * 0.6f) + new Vector3(_moveInput.x, _moveInput.y, 0), 0.8f, sandLayer).Length > 0)
             {
+                Debug.Log("Start Swimming");
                 // Start Swimming
                 StartCoroutine(swimmingRoutine(moveInput));
                 break;
@@ -71,9 +76,9 @@ public class PlayerDash : MonoBehaviour
         SwimmingToggle.Invoke();
         swimming = true;
         _rb.isKinematic = true;
-        float minSwimTime = Time.time + 0.5f;
+        float minSwimTime = Time.time + 0.2f;
 
-        while (minSwimTime > Time.time || Physics.OverlapBox(transform.position, transform.localScale / 4, transform.rotation, sandLayer).Length > 0)
+        while (minSwimTime > Time.time || Physics.OverlapBox(transform.position + new Vector3(0, 0.3f, 0), new Vector3(1, 1.6f, 1) / 4, transform.rotation, sandLayer).Length > 0)
         {
             if (_moveInput != Vector2.zero && _moveInput != pMoveInput)
                 pMoveInput = Vector2.Lerp(pMoveInput, _moveInput, Vector2.Distance(pMoveInput, _moveInput) * Time.deltaTime * swimRotDampening).normalized;
@@ -86,13 +91,20 @@ public class PlayerDash : MonoBehaviour
 
             transform.Translate(pMoveInput.normalized * swimSpeed * Time.deltaTime);
 
+            // Rotate Sprite
+            float angle = Mathf.Atan2(pMoveInput.y, pMoveInput.x) * Mathf.Rad2Deg;
+            sprite.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
             yield return null;
         }
 
-        SwimmingToggle.Invoke();
-        swimming = false;
         _rb.isKinematic = false;
         _rb.velocity = pMoveInput * swimSpeed;
+
+        yield return new WaitForSeconds(0.1f);
+
+        SwimmingToggle.Invoke();
+        swimming = false;
         dashes = 1;
     }
 
@@ -112,4 +124,9 @@ public class PlayerDash : MonoBehaviour
             _rb.isKinematic = false;
         }
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawSphere(transform.position + (Vector3.up * 0.6f) + new Vector3(_moveInput.x, _moveInput.y, 0), 0.8f);
+    //}
 }

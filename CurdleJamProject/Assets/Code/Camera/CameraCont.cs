@@ -16,6 +16,8 @@ public class CameraCont : MonoBehaviour
     [SerializeField] private Color color = new Color(1, 1, 1, 0.5f);
     [SerializeField] private Vector2 scale = new Vector2(1, 1);
 
+    [HideInInspector] public bool useZones = true;
+
     void Update()
     {
         velocityOffset = Vector3.Lerp(velocityOffset, targetRigidbody.velocity * velocityInfluenceMult, velDampening * Time.deltaTime);
@@ -24,7 +26,7 @@ public class CameraCont : MonoBehaviour
         Vector2 targetPos = target.position + velocityOffset + offset;
 
         // Clamp To Current Camera Zone
-        if (zone != null)
+        if (zone != null && useZones)
         {
             targetPos.x = Mathf.Clamp(targetPos.x, zone.minX() + scale.x, zone.maxX() - scale.x);
             targetPos.y = Mathf.Clamp(targetPos.y, zone.minY() + scale.y, zone.maxY() - scale.y);

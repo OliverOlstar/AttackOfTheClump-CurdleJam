@@ -381,7 +381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: 0.4
   rot: {x: 90, y: 0, z: 0}
-  endSpeed: 5
+  endSpeed: 1
   delay: 0.5
 --- !u!54 &48655703
 Rigidbody:
@@ -4421,9 +4421,10 @@ GameObject:
   m_Component:
   - component: {fileID: 669156101}
   - component: {fileID: 669156102}
+  - component: {fileID: 669156103}
   m_Layer: 10
   m_Name: Death
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4435,13 +4436,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 669156100}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 1.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 48655704}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!65 &669156102
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4453,8 +4454,20 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 32.46, z: 10}
-  m_Center: {x: 0, y: 0, z: 1.31}
+  m_Size: {x: 10, y: 24.22, z: 5}
+  m_Center: {x: 0, y: 6, z: 1.31}
+--- !u!114 &669156103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669156100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f6ea8e25ab543d43863b7e73bbb0871, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &709413185
 GameObject:
   m_ObjectHideFlags: 0
