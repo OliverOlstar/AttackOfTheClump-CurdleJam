@@ -101,7 +101,7 @@ public class PlayerDash : MonoBehaviour
         }
 
         _rb.isKinematic = false;
-        _rb.velocity = pMoveInput * swimSpeed;
+        _rb.velocity = pMoveInput.normalized * swimSpeed;
 
         SwimmingToggle2.Invoke();
 

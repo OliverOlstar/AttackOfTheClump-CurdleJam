@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Swimming) return;
 
-        _rb.AddForce(_moveInput.x * Vector2.right * moveForce * inputInfluence);
+        _rb.AddForce(_moveInput.x * Vector2.right * moveForce * inputInfluence * Time.deltaTime);
     }
 
     public void OnJump(InputAction.CallbackContext pAction)
