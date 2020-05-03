@@ -38,9 +38,9 @@ public class FinalEffect : MonoBehaviour
     {
         EZCameraShake.CameraShaker.Instance.StartShake(20, 10, 5);
 
-        while (Vector3.Distance(transform.position + endPos, player.position) < distance - distanceReduction)
+        while (Vector3.Distance(transform.position + endPos, player.position) > distanceReduction)
         {
-            Camera.main.orthographicSize = Mathf.Lerp(orthoSize, newSize, Vector3.Distance(transform.position + endPos, player.position) / distance);
+            Camera.main.orthographicSize = Mathf.Lerp(orthoSize, newSize, 1 - Vector3.Distance(transform.position + endPos, player.position) / distance);
             yield return null;
         }
 
@@ -52,7 +52,8 @@ public class FinalEffect : MonoBehaviour
         {
             time += Time.deltaTime;
             Camera.main.orthographicSize = Mathf.Lerp(newSize, 15, time);
-            player.position = Vector3.Lerp(pos, transform.position + endPos2, time);
+            //player.position = Vector3.Lerp(pos, transform.position + endPos2, time);
+            yield return null;
         }
     }
 

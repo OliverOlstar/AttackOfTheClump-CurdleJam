@@ -54,7 +54,6 @@ public class PlayerSFX : MonoBehaviour
 
     public void OnSwimming()
     {
-        Debug.Log("Swim SFX");
         isSwimming = !isSwimming;
 
         if (isSwimming)

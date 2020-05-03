@@ -10,7 +10,8 @@ public class BossAbsorble : MonoBehaviour
     {
         if (other.CompareTag("Boss"))
         {
-            Instantiate(breakingSound).GetComponent<AudioSource>().pitch = Random.Range(0.5f, 1f);
+            if (breakingSound != null)
+                Instantiate(breakingSound).GetComponent<AudioSource>().pitch = Random.Range(0.5f, 1f);
             Destroy(gameObject);
         }
     }

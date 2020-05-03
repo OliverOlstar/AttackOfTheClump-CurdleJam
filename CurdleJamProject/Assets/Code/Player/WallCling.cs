@@ -10,7 +10,7 @@ public class WallCling : MonoBehaviour
     [SerializeField] private float strengthDeadzone = 10;
 
     [Space]
-    [SerializeField] private float delayLength = 0.5f;
+    [SerializeField] private float delayLength = 0.2f;
     private float delayEndTime = 0;
 
     private bool Swimming = false;
@@ -49,7 +49,7 @@ public class WallCling : MonoBehaviour
 
     private IEnumerator StartSlowFall()
     {
-        while (delayEndTime > Time.time)
+        while (Time.time < delayEndTime || _rb.velocity.y > 0)
         {
             yield return null;
         }
@@ -84,7 +84,6 @@ public class WallCling : MonoBehaviour
     public void Jumped()
     {
         _rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        strength = Mathf.Min(strength + 0.5f, maxStrength);
         delayEndTime = Time.time + delayLength;
     }
 

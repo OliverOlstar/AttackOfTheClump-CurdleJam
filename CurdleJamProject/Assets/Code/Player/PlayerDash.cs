@@ -25,6 +25,7 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private float swimRotDampening = 5;
     [SerializeField] private LayerMask sandLayer = new LayerMask();
     private bool swimming = false;
+    private bool swimming2 = false;
 
     [SerializeField] private LayerMask swimmingCollisionLayer = new LayerMask();
     [SerializeField] private float swimmingCollisionCheckDistance = 1;
@@ -61,7 +62,6 @@ public class PlayerDash : MonoBehaviour
             // Check for colliding with sand
             if (Physics.OverlapSphere(transform.position + (Vector3.up * 0.6f) + new Vector3(_moveInput.x, _moveInput.y, 0), 0.8f, sandLayer).Length > 0)
             {
-                Debug.Log("Start Swimming");
                 // Start Swimming
                 StartCoroutine(swimmingRoutine(moveInput));
                 break;
@@ -77,6 +77,7 @@ public class PlayerDash : MonoBehaviour
         SwimmingToggle.Invoke();
         SwimmingToggle2.Invoke();
         swimming = true;
+        swimming2 = true;
         _rb.isKinematic = true;
         float minSwimTime = Time.time + 0.2f;
 
@@ -104,6 +105,7 @@ public class PlayerDash : MonoBehaviour
         _rb.velocity = pMoveInput.normalized * swimSpeed;
 
         SwimmingToggle2.Invoke();
+        swimming2 = false;
 
         yield return new WaitForSeconds(0.1f);
 
@@ -125,8 +127,13 @@ public class PlayerDash : MonoBehaviour
         {
             swimming = false;
             SwimmingToggle.Invoke();
-            SwimmingToggle2.Invoke();
             _rb.isKinematic = false;
+        }
+
+        if (swimming2)
+        {
+            swimming2 = false;
+            SwimmingToggle2.Invoke();
         }
     }
 
